@@ -1,7 +1,7 @@
 require("chai").should();
 global._ = require('underscore');
 global.Backbone = require('backbone');
-require('../backbone.nativeview');
+require('../index');
 
 describe('Backbone.NativeView', function() {
 });
