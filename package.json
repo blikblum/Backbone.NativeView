@@ -1,23 +1,33 @@
 {
-  "name": "backbone.nativeview",
-  "version": "0.3.3",
-  "author": "Adam Krebs <amk528@cs.nyu.edu>",
-  "description": "A Backbone View powered by native DOM methods",
+  "name": "marionette.nativeview",
+  "version": "0.4.0",
+  "author": "Luiz Américo Pereira Câmara",
+  "description": "Marionette Views powered by native DOM methods",
   "licence": "MIT",
-  "main": "backbone.nativeview",
+  "main": "marionette.nativeview.js",
+  "module": "marionette.nativeview.esm.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/akre54/backbone.nativeview"
   },
   "devDependencies": {
-    "backbone": ">1.2.0",
-    "phantomjs": "1.9.7-8"
+    "backbone": "^1.3.3",
+    "backbone.marionette": "^3.4.3",
+    "backbone.radio": "^2.0.0",
+    "del": "^3.0.0",
+    "phantomjs": "1.9.7-8",
+    "rollup": "^0.50.0",
+    "rollup-plugin-ignore": "^1.0.3"
+  },
+  "peerDependencies": {
+    "backbone": "^1.3.3"
   },
   "engines": {
     "node": "*",
     "npm": "*"
   },
   "scripts": {
+    "build": "node tools/build.js",
     "test": "phantomjs test/vendor/runner.js test/index.html?noglobals=true"
   }
 }
