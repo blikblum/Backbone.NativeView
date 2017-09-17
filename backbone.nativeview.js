@@ -19,22 +19,16 @@
   var ElementProto = (typeof Element !== 'undefined' && Element.prototype) || {};
 
   // Cross-browser event listener shims
-  var elementAddEventListener = ElementProto.addEventListener ? function(eventName, listener) {
-    return this.addEventListener(eventName, listener, false);
-  } : function(eventName, listener) {
-    return this.attachEvent('on' + eventName, listener);
-  }
+  var elementAddEventListener = ElementProto.addEventListener
 
-  var elementRemoveEventListener = ElementProto.removeEventListener ? function(eventName, listener) {
-    return this.removeEventListener(eventName, listener, false);
-  } : function(eventName, listener) {
-    return this.detachEvent('on' + eventName, listener);
-  }
+  var elementRemoveEventListener = ElementProto.removeEventListener
 
   var indexOf = function(array, item) {
     for (var i = 0, len = array.length; i < len; i++) if (array[i] === item) return i;
     return -1;
   }
+
+  // todo: remove fallback matches implementation as soon as phantomjs is replaced
 
   // Find the right `Element#matches` for IE>=9 and modern browsers.
   var matchesSelector = ElementProto.matches ||
