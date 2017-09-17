@@ -22,33 +22,12 @@ var elementAddEventListener = ElementProto.addEventListener
 
 var elementRemoveEventListener = ElementProto.removeEventListener
 
-var indexOf = function(array, item) {
-  for (var i = 0, len = array.length; i < len; i++) if (array[i] === item) return i;
-  return -1;
-}
-
-// todo: remove fallback matches implementation as soon as phantomjs is replaced
-
 // Find the right `Element#matches` for IE>=9 and modern browsers.
 var matchesSelector = ElementProto.matches ||
     ElementProto.webkitMatchesSelector ||
     ElementProto.mozMatchesSelector ||
     ElementProto.msMatchesSelector ||
-    ElementProto.oMatchesSelector ||
-    // Make our own `Element#matches` for IE8
-    function(selector) {
-      // Use querySelectorAll to find all elements matching the selector,
-      // then check if the given element is included in that list.
-      // Executing the query on the parentNode reduces the resulting nodeList,
-      // (document doesn't have a parentNode).
-      var nodeList = (this.parentNode || document).querySelectorAll(selector) || [];
-      return ~indexOf(nodeList, this);
-    };
-
-// Cache Marionette Views for later access in constructor
-var MnView = Marionette.View;
-var MnCollectionView = Marionette.CollectionView;
-var MnNextCollectionView = Marionette.NextCollectionView;
+    ElementProto.oMatchesSelector;
 
 export var domApi = {
   // Lookup the `selector` string
@@ -91,11 +70,9 @@ export var domApi = {
 
 // To extend an existing view to use native methods, extend the View prototype
 // with the mixin: _.extend(MyView.prototype, Backbone.NativeViewMixin);
-var BaseMixin = {
+export var mixin = {
 
   Dom: _.extend({}, Marionette.View.prototype.Dom, domApi),
-
-  _domEvents: null,
 
   $: function(selector) {
     return this.el.querySelectorAll(selector);
@@ -143,6 +120,7 @@ var BaseMixin = {
   // result of calling bound `listener` with the parameters given to the
   // handler.
   delegate: function(eventName, selector, listener) {
+    this._domEvents || (this._domEvents = []);
     if (typeof selector === 'function') {
       listener = selector;
       selector = null;
@@ -172,7 +150,7 @@ var BaseMixin = {
       selector = null;
     }
 
-    if (this.el) {
+    if (this.el && this._domEvents) {
       var handlers = this._domEvents.slice();
       var i = handlers.length;
       while (i--) {
@@ -204,29 +182,8 @@ var BaseMixin = {
   }
 };
 
-export var NativeViewMixin = _.extend({}, BaseMixin, {
-  constructor: function() {
-    this._domEvents = [];
-    return MnView.apply(this, arguments);
-  }
-})
+export var NativeView = Marionette.View.extend(mixin);
 
-export var NativeCollectionViewMixin = _.extend({}, BaseMixin, {
-  constructor: function() {
-    this._domEvents = [];
-    return MnCollectionView.apply(this, arguments);
-  }
-})
+export var NativeCollectionView = Marionette.CollectionView.extend(mixin);
 
-export var NativeNextCollectionViewMixin = _.extend({}, BaseMixin, {
-  constructor: function() {
-    this._domEvents = [];
-    return MnNextCollectionView.apply(this, arguments);
-  }
-})
-
-export var NativeView = Marionette.View.extend(NativeViewMixin);
-
-export var NativeCollectionView = Marionette.CollectionView.extend(NativeCollectionViewMixin);
-
-export var NativeNextCollectionView = Marionette.NextCollectionView.extend(NativeNextCollectionViewMixin);
+export var NativeNextCollectionView = Marionette.NextCollectionView.extend(mixin);

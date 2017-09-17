@@ -13,20 +13,6 @@
 
   });
 
-  test("extending", 3, function() {
-    var NativeView = Marionette.Native.NativeView;
-
-    var ExtendedView = Marionette.View.extend(Marionette.Native.NativeViewMixin);
-
-    var MixinView = Marionette.View.extend();
-    _.extend(MixinView.prototype, Marionette.Native.NativeViewMixin);
-    MixinView.prototype.initialize = function(options) { this._domEvents = []; }
-
-    ok((new NativeView)._domEvents);
-    ok((new ExtendedView)._domEvents);
-    ok((new MixinView)._domEvents);
-  });
-
   test("View#$", function() {
     var result = view.$('h1');
     equal(result.length, 1);
