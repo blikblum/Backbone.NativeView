@@ -91,6 +91,8 @@ export const domApi = {
 // with the mixin: _.extend(MyView.prototype, Backbone.NativeViewMixin);
 const BaseMixin = {
 
+  Dom: _.extend({}, Marionette.View.prototype.Dom, domApi),
+
   _domEvents: null,
 
   $: function(selector) {
@@ -119,6 +121,7 @@ const BaseMixin = {
     } else {
       this.el = element;
     }
+    this.$el = [this.el];
   },
 
   // Set a hash of attributes to the view's `el`. We use the "prop" version
@@ -188,7 +191,7 @@ const BaseMixin = {
 
   // Remove all events created with `delegate` from `el`
   undelegateEvents: function() {
-    if (this.el) {
+    if (this.el && this._domEvents) {
       for (var i = 0, len = this._domEvents.length; i < len; i++) {
         var item = this._domEvents[i];
         elementRemoveEventListener.call(this.el, item.eventName, item.handler, false);
