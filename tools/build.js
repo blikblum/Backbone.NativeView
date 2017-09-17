@@ -21,7 +21,7 @@ promise = promise.then(() => del(['dist/*']));
   file: `dist/marionette.nativeview${format === 'umd' ? '' : '.esm'}.js`,
   format,
   sourcemap: true,
-  name: format === 'umd' ? pkg.name : undefined,
+  name: format === 'umd' ? 'Marionette.Native' : undefined,
   globals: {
     backbone: 'Backbone'
   }
