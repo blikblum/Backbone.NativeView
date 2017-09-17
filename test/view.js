@@ -1,9 +1,9 @@
 (function() {
   module("Backbone.NativeView");
-  Backbone.View = Backbone.NativeView;
+  var NativeView = Marionette.Native.NativeView;
 
   test("constructor", 3, function() {
-    var view = new Backbone.View({
+    var view = new NativeView({
       id        : 'test-view',
       className : 'test-view',
       other     : 'non-special-option'
@@ -14,7 +14,7 @@
   });
 
   test("$", 2, function() {
-    var view = new Backbone.View;
+    var view = new NativeView;
     view.setElement('<p><a><b>test</b></a></p>');
     var result = view.$('a b');
 
@@ -23,18 +23,14 @@
   });
 
   test("$el", function() {
-    var view = new Backbone.View;
+    var view = new NativeView;
     view.setElement('<p><a><b>test</b></a></p>');
     strictEqual(view.el.nodeType, 1);
-
-    if (Backbone.$) {
-      ok(view.$el instanceof Backbone.$);
-      strictEqual(view.$el[0], view.el);
-    }
+    strictEqual(view.$el[0], view.el);
   });
 
   test("initialize", 1, function() {
-    var View = Backbone.View.extend({
+    var View = NativeView.extend({
       initialize: function() {
         this.one = 1;
       }
@@ -46,7 +42,7 @@
   test("delegateEvents", 6, function() {
     var counter1 = 0, counter2 = 0;
 
-    var view = new Backbone.View({el: '#testElement'});
+    var view = new NativeView({el: '#testElement'});
     view.increment = function(){ counter1++; };
     addEventListener.call(view.el, 'click', function(){ counter2++; });
 
@@ -68,7 +64,7 @@
   });
 
   test("delegate", 2, function() {
-    var view = new Backbone.View({el: '#testElement'});
+    var view = new NativeView({el: '#testElement'});
     view.delegate('click', 'h1', function() {
       ok(true);
     });
@@ -79,7 +75,7 @@
   });
 
   test("delegateEvents allows functions for callbacks", 3, function() {
-    var view = new Backbone.View({el: '<p></p>'});
+    var view = new NativeView({el: '<p></p>'});
     view.counter = 0;
 
     var events = {
@@ -105,7 +101,7 @@
   });
 
   test("delegateEvents ignore undefined methods", 0, function() {
-    var view = new Backbone.View({el: '<p></p>'});
+    var view = new NativeView({el: '<p></p>'});
 
     document.body.appendChild(view.el);
 
@@ -118,7 +114,7 @@
   test("undelegateEvents", 6, function() {
     var counter1 = 0, counter2 = 0;
 
-    var view = new Backbone.View({el: '#testElement'});
+    var view = new NativeView({el: '#testElement'});
     view.increment = function(){ counter1++; };
     addEventListener.call(view.el, 'click', function(){ counter2++; });
 
@@ -141,7 +137,7 @@
   });
 
   test("undelegate", 0, function() {
-    var view = new Backbone.View({el: '#testElement'});
+    var view = new NativeView({el: '#testElement'});
     view.delegate('click', function() { ok(false); });
     view.delegate('click', 'h1', function() { ok(false); });
 
@@ -152,7 +148,7 @@
   });
 
   test("undelegate with passed handler", 1, function() {
-    var view = new Backbone.View({el: '#testElement'});
+    var view = new NativeView({el: '#testElement'});
     var listener = function() { ok(false); };
     view.delegate('click', listener);
     view.delegate('click', function() { ok(true); });
@@ -161,7 +157,7 @@
   });
 
   test("undelegate with selector", 2, function() {
-    var view = new Backbone.View({el: '#testElement'});
+    var view = new NativeView({el: '#testElement'});
     view.delegate('click', function() { ok(true); });
     view.delegate('click', 'h1', function() { ok(false); });
     view.undelegate('click', 'h1');
@@ -170,7 +166,7 @@
   });
 
   test("undelegate with handler and selector", 2, function() {
-    var view = new Backbone.View({el: '#testElement'});
+    var view = new NativeView({el: '#testElement'});
     view.delegate('click', function() { ok(true); });
     var handler = function(){ ok(false); };
     view.delegate('click', 'h1', handler);
@@ -180,7 +176,7 @@
   });
 
   test("_createElement produces the correct DOM el", 1, function() {
-    var View = Backbone.View.extend({
+    var View = NativeView.extend({
       tagName: 'span'
     });
 
@@ -188,7 +184,7 @@
   });
 
   test("_ensureElement with DOM node el", 1, function() {
-    var View = Backbone.View.extend({
+    var View = NativeView.extend({
       el: document.body
     });
 
@@ -196,26 +192,26 @@
   });
 
   test("_ensureElement with string el", 3, function() {
-    var View = Backbone.View.extend({
+    var View = NativeView.extend({
       el: "body"
     });
     strictEqual(new View().el, document.body);
 
-    View = Backbone.View.extend({
+    View = NativeView.extend({
       el: "#testElement > h1"
     });
     var children = document.getElementById('testElement').childNodes;
     var h1 = _.findWhere(children, {nodeType: 1});
     strictEqual(new View().el, h1);
 
-    View = Backbone.View.extend({
+    View = NativeView.extend({
       el: "#nonexistent"
     });
     ok(!new View().el);
   });
 
   test("with className and id functions", 2, function() {
-    var View = Backbone.View.extend({
+    var View = NativeView.extend({
       className: function() {
         return 'className';
       },
@@ -229,7 +225,7 @@
   });
 
   test("with attributes", 2, function() {
-    var View = Backbone.View.extend({
+    var View = NativeView.extend({
       attributes: {
         id: 'id',
         'class': 'class'
@@ -241,7 +237,7 @@
   });
 
   test("with attributes as a function", 1, function() {
-    var View = Backbone.View.extend({
+    var View = NativeView.extend({
       attributes: function() {
         return {'class': 'dynamic'};
       }
@@ -254,7 +250,7 @@
     var count = 0;
     var el = document.createElement('p');
 
-    var View = Backbone.View.extend({
+    var View = NativeView.extend({
       el: el,
       events: {
         click: function() {
@@ -283,7 +279,7 @@
   test("custom events", 2, function() {
     var count = 0;
 
-    var View = Backbone.View.extend({
+    var View = NativeView.extend({
       el: 'body',
       events: function() {
         return {"fake$event": "run"};
@@ -307,7 +303,7 @@
   test("#1048 - setElement uses provided object.", 2, function() {
     var el = document.body;
 
-    var view = new Backbone.View({el: el});
+    var view = new NativeView({el: el});
     ok(view.el === el);
 
     view.setElement(el = document.body);
@@ -321,7 +317,7 @@
     document.body.appendChild(button1);
     document.body.appendChild(button2);
 
-    var View = Backbone.View.extend({
+    var View = NativeView.extend({
       events: {
         click: function(e) {
           ok(view.el === e.target || e.srcElement);
@@ -340,7 +336,7 @@
   });
 
   test("#1172 - Clone attributes object", 2, function() {
-    var View = Backbone.View.extend({
+    var View = NativeView.extend({
       attributes: {foo: 'bar'}
     });
 
@@ -352,7 +348,7 @@
   });
 
   test("#1228 - tagName can be provided as a function", 1, function() {
-    var View = Backbone.View.extend({
+    var View = NativeView.extend({
       tagName: function() {
         return 'p';
       }
@@ -362,7 +358,7 @@
   });
 
   test("views stopListening", 0, function() {
-    var View = Backbone.View.extend({
+    var View = NativeView.extend({
       initialize: function() {
         this.listenTo(this.model, 'all x', function(){ ok(false); });
         this.listenTo(this.collection, 'all x', function(){ ok(false); });
@@ -380,7 +376,7 @@
   });
 
   test("Provide function for el.", 2, function() {
-    var View = Backbone.View.extend({
+    var View = NativeView.extend({
       el: function() {
         return "<p><a></a></p>";
       }
@@ -392,7 +388,7 @@
   });
 
   test("remove", 1, function() {
-    var view = new Backbone.View;
+    var view = new NativeView;
     document.body.appendChild(view.el);
 
     view.delegate('click', function() { ok(false); });
@@ -409,7 +405,7 @@
   test("events passed in options", 1, function() {
     var counter = 0;
 
-    var View = Backbone.View.extend({
+    var View = NativeView.extend({
       el: '#testElement',
       increment: function() {
         counter++;

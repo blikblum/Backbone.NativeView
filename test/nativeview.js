@@ -1,7 +1,7 @@
 (function() {
 
-  // When testing alternative View implementations, change this varaible.
-  var View = Backbone.NativeView;
+  // When testing alternative View implementations, change this variable.
+  var View = Marionette.Native.NativeView;
 
   var view;
 
@@ -14,12 +14,12 @@
   });
 
   test("extending", 3, function() {
-    var BaseView = Backbone.View.extend();
-    var NativeView = Backbone.NativeView;
+    var NativeView = Marionette.Native.NativeView;
 
-    var ExtendedView = Backbone.View.extend(Backbone.NativeViewMixin);
+    var ExtendedView = Marionette.View.extend(Marionette.Native.NativeViewMixin);
 
-    var MixinView = _.extend(BaseView, Backbone.NativeViewMixin);
+    var MixinView = Marionette.View.extend();
+    _.extend(MixinView.prototype, Marionette.Native.NativeViewMixin);
     MixinView.prototype.initialize = function(options) { this._domEvents = []; }
 
     ok((new NativeView)._domEvents);
@@ -74,7 +74,7 @@
 
 
   // Cross-browser helpers
-  var addEventListener = typeof Element != 'undefined' && Element.prototype.addEventListener || function(eventName, listener) {
+  var addEventListener = typeof Element !== 'undefined' && Element.prototype.addEventListener || function(eventName, listener) {
     return this.attachEvent('on' + eventName, listener);
   };
 
