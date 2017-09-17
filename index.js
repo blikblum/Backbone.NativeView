@@ -7,7 +7,8 @@
 //     For all details and documentation:
 //     https://github.com/akre54/Backbone.NativeView
 
-import Backbone from 'backbone'
+import _ from 'underscore'
+import Marionette from 'backbone.marionette'
 
 // Cached regex to match an opening '<' of an HTML tag, possibly left-padded
 // with whitespace.
@@ -44,19 +45,53 @@ var matchesSelector = ElementProto.matches ||
       return ~indexOf(nodeList, this);
     };
 
-// Cache Backbone.View for later access in constructor
-var BBView = Backbone.View;
+// Cache Marionette Views for later access in constructor
+var MnView = Marionette.View;
+var MnCollectionView = Marionette.CollectionView;
+var MnNextCollectionView = Marionette.NextCollectionView;
+
+export const domApi = {
+  // Lookup the `selector` string
+  // Selector may also be a DOM element
+  // Returns an array-like object of nodes
+  getEl(selector) {
+    return getEl(selector);
+  },
+
+  // Finds the `selector` string with the el
+  // Returns an array-like object of nodes
+  findEl(el, selector, _$el = getEl(el)) {
+    return _$el.find(selector);
+  },
+
+  // Detach `el` from the DOM without removing listeners
+  detachEl(el, _$el = getEl(el)) {
+    _$el.detach();
+  },
+
+  // Replace the contents of `el` with the HTML string of `html`
+  setContents(el, html, _$el = getEl(el)) {
+    _$el.html(html);
+  },
+
+  // Takes the DOM node `el` and appends the DOM node `contents`
+  // to the end of the element's contents.
+  appendContents(el, contents, {_$el = getEl(el), _$contents = getEl(contents)} = {}) {
+    _$el.append(_$contents);
+  },
+
+  // Remove the inner contents of `el` from the DOM while leaving
+  // `el` itself in the DOM.
+  detachContents(el, _$el = getEl(el)) {
+    _$el.contents().detach();
+  }
+};
 
 // To extend an existing view to use native methods, extend the View prototype
 // with the mixin: _.extend(MyView.prototype, Backbone.NativeViewMixin);
-Backbone.NativeViewMixin = {
+const BaseMixin = {
 
   _domEvents: null,
-
-  constructor: function() {
-    this._domEvents = [];
-    return BBView.apply(this, arguments);
-  },
 
   $: function(selector) {
     return this.el.querySelectorAll(selector);
@@ -164,4 +199,29 @@ Backbone.NativeViewMixin = {
   }
 };
 
-Backbone.NativeView = Backbone.View.extend(Backbone.NativeViewMixin);
+export const NativeViewMixin = _.extend({}, BaseMixin, {
+  constructor: function() {
+    this._domEvents = [];
+    return MnView.apply(this, arguments);
+  }
+})
+
+export const NativeCollectionViewMixin = _.extend({}, BaseMixin, {
+  constructor: function() {
+    this._domEvents = [];
+    return MnCollectionView.apply(this, arguments);
+  }
+})
+
+export const NativeNextCollectionViewMixin = _.extend({}, BaseMixin, {
+  constructor: function() {
+    this._domEvents = [];
+    return MnNextCollectionView.apply(this, arguments);
+  }
+})
+
+export const NativeView = Marionette.View.extend(NativeViewMixin);
+
+export const NativeCollectionView = Marionette.CollectionView.extend(NativeCollectionViewMixin);
+
+export const NativeNextCollectionView = Marionette.NextCollectionView.extend(NativeNextCollectionViewMixin);
