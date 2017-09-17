@@ -1,61 +1,77 @@
-Backbone.NativeView
-===================
+Marionette.Native
+=================
 
-A drop-in replacement for Backbone.View that uses only native DOM methods for
-element selection and event delegation. It has no dependency on jQuery.
+A drop-in replacement for Marionette views (View, CollectionView, NextCollectionView) 
+that uses only native DOM methods for element selection and event delegation. 
+It has no dependency on jQuery.
 
-NOTE: Backbone.NativeView relies on version 1.2.0 of Backbone.
-Backbone 1.1.2 is **not compatible** with Backbone.NativeView.
 
-To Use:
--------
-Load Backbone.NativeView with your favorite module loader or add as a script
-tag after you have loaded Backbone in the page. Wherever you had previously
-inherited from Backbone.View, you will now inherit from Backbone.NativeView.
+Usage
+-----
+
+> When using a script tag, the view classes and the mixin can be found at Marionette.Native namespace
+> Example:
+> ````javascript
+> var NativeView = Marionette.Native.NativeView;
+> var mixin = Marionette.Native.mixin;
+> ```` 
+
+#### Builtin view classes
 
 ```js
-var MyView = Backbone.NativeView.extend({
+import {NativeView, NativeCollectionView, NativeNextCollectionView} from 'marionette.native';
+var MyView = NativeView.extend({
+  initialize: function(options) {
+    // ...
+  }
+});
+
+var MyCollectionView = NativeCollectionView.extend({
+  initialize: function(options) {
+    // ...
+  }
+});
+
+var MyNextCollectionView = NativeNextCollectionView.extend({
   initialize: function(options) {
     // ...
   }
 });
 ```
+
+#### mixin
 
 As an alternative, you may extend an existing View's prototype to use native
 methods, or even replace Backbone.View itself:
 
 ```js
-var MyBaseView = Backbone.View.extend(Backbone.NativeViewMixin);
+import {View} from 'backbone.marionette';
+import {mixin} from 'marionette.native';
+var MyBaseView = View.extend(mixin);
 ```
 
 or
 
 ```js
-var MyBaseView = Backbone.View.extend({
-  initialize: function(options) {
-    // If you go the prototype extension route be sure to set _domEvents in
-    // initialize yourself.
-    this._domEvents = [];
-  }
-});
-
-_.extend(MyBaseView.prototype, Backbone.NativeViewMixin);
+import {View} from 'backbone.marionette';
+import {mixin} from 'marionette.native';
+var MyBaseView = View.extend();
+_.extend(MyBaseView.prototype, mixin);
 ```
 
 or
 
 ```js
-Backbone.View = Backbone.NativeView;
-
-var MyView = Backbone.View.extend({
-  initialize: function(options) {
-    // ...
-  }
-});
+// patch Marionette view classes directly
+import {View, CollectionView, NextCollectionView} from 'backbone.marionette';
+import {mixin} from 'marionette.native';
+_.extend(View.prototype, mixin);
+_.extend(CollectionView.prototype, mixin);
+_.extend(NextCollectionView.prototype, mixin);
 ```
 
-Features:
----------
+Features
+--------
 Delegation:
 ```js
 var view = new MyView({el: '#my-element'});
@@ -80,17 +96,15 @@ _.each(view.$('.item'), function(el) {
 var fields = _.pluck(view.$('.field'), 'innerHTML');
 ```
 
-Requirements:
--------------
-NativeView makes use of `querySelector` and `querySelectorAll`. For IE7 and
-below you must include a polyfill.
+Requirements
+------------
+Marionette.Native makes use of `querySelector` and `querySelectorAll`. No support for IE8.
 
-Notes:
-------
+Notes
+-----
 * The `$el` property no longer exists on Views. Use `el` instead.
 * `View#$` returns a NodeList instead of a jQuery context. You can
   iterate over either using `_.each`.
 
 
-With many thanks to @wyuenho for his initial code.
-
+With many thanks to @wyuenho and @akre54 for their initial code.
