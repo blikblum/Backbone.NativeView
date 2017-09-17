@@ -50,46 +50,48 @@ var MnView = Marionette.View;
 var MnCollectionView = Marionette.CollectionView;
 var MnNextCollectionView = Marionette.NextCollectionView;
 
-export const domApi = {
+export var domApi = {
   // Lookup the `selector` string
   // Selector may also be a DOM element
   // Returns an array-like object of nodes
-  getEl(selector) {
-    return getEl(selector);
+  getEl: function(selector) {
+    return _.isObject(selector) ? [selector] : document.querySelectorAll(selector);
   },
 
   // Finds the `selector` string with the el
   // Returns an array-like object of nodes
-  findEl(el, selector, _$el = getEl(el)) {
-    return _$el.find(selector);
+  findEl: function(el, selector) {
+    return el.querySelectorAll(selector);
   },
 
   // Detach `el` from the DOM without removing listeners
-  detachEl(el, _$el = getEl(el)) {
-    _$el.detach();
+  detachEl: function(el) {
+    if (el.parentNode) el.parentNode.removeChild(el);
   },
 
   // Replace the contents of `el` with the HTML string of `html`
-  setContents(el, html, _$el = getEl(el)) {
-    _$el.html(html);
+  setContents: function(el, html) {
+    if (html) el.innerHTML = html;
   },
 
   // Takes the DOM node `el` and appends the DOM node `contents`
   // to the end of the element's contents.
-  appendContents(el, contents, {_$el = getEl(el), _$contents = getEl(contents)} = {}) {
-    _$el.append(_$contents);
+  appendContents: function(el, contents) {
+    el.appendChild(contents);
   },
 
   // Remove the inner contents of `el` from the DOM while leaving
   // `el` itself in the DOM.
-  detachContents(el, _$el = getEl(el)) {
-    _$el.contents().detach();
+  detachContents: function(el) {
+    while (el.firstChild) {
+      el.removeChild(el.firstChild);
+    }
   }
 };
 
 // To extend an existing view to use native methods, extend the View prototype
 // with the mixin: _.extend(MyView.prototype, Backbone.NativeViewMixin);
-const BaseMixin = {
+var BaseMixin = {
 
   Dom: _.extend({}, Marionette.View.prototype.Dom, domApi),
 
@@ -202,29 +204,29 @@ const BaseMixin = {
   }
 };
 
-export const NativeViewMixin = _.extend({}, BaseMixin, {
+export var NativeViewMixin = _.extend({}, BaseMixin, {
   constructor: function() {
     this._domEvents = [];
     return MnView.apply(this, arguments);
   }
 })
 
-export const NativeCollectionViewMixin = _.extend({}, BaseMixin, {
+export var NativeCollectionViewMixin = _.extend({}, BaseMixin, {
   constructor: function() {
     this._domEvents = [];
     return MnCollectionView.apply(this, arguments);
   }
 })
 
-export const NativeNextCollectionViewMixin = _.extend({}, BaseMixin, {
+export var NativeNextCollectionViewMixin = _.extend({}, BaseMixin, {
   constructor: function() {
     this._domEvents = [];
     return MnNextCollectionView.apply(this, arguments);
   }
 })
 
-export const NativeView = Marionette.View.extend(NativeViewMixin);
+export var NativeView = Marionette.View.extend(NativeViewMixin);
 
-export const NativeCollectionView = Marionette.CollectionView.extend(NativeCollectionViewMixin);
+export var NativeCollectionView = Marionette.CollectionView.extend(NativeCollectionViewMixin);
 
-export const NativeNextCollectionView = Marionette.NextCollectionView.extend(NativeNextCollectionViewMixin);
+export var NativeNextCollectionView = Marionette.NextCollectionView.extend(NativeNextCollectionViewMixin);
