@@ -4,11 +4,11 @@
   "author": "Luiz Américo Pereira Câmara",
   "description": "Marionette Views powered by native DOM methods",
   "licence": "MIT",
-  "main": "marionette.nativeview.js",
-  "module": "marionette.nativeview.esm.js",
+  "main": "marionette.native.js",
+  "module": "marionette.native.esm.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/akre54/backbone.nativeview"
+    "url": "https://github.com/blikblum/marionette.native"
   },
   "devDependencies": {
     "backbone": "^1.3.3",

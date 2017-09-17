@@ -1,11 +1,11 @@
-// Marionette.NativeView.js 0.3.3
-// ---------------
+// Marionette.Native
+// -----------------
 
 //     (c) 2015 Adam Krebs, Jimmy Yuen Ho Wong
 //     (c) 2017 Luiz Américo
-//     Backbone.NativeView may be freely distributed under the MIT license.
+//     Marionette.Native may be freely distributed under the MIT license.
 //     For all details and documentation:
-//     https://github.com/akre54/Backbone.NativeView
+//     https://github.com/blikblum/Marionette.Native
 
 import _ from 'underscore'
 import Marionette from 'backbone.marionette'

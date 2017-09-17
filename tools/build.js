@@ -18,7 +18,7 @@ promise = promise.then(() => del(['dist/*']));
     external: Object.keys(pkg.peerDependencies || {}),
     plugins: [ignore(['jquery'])]
 }).then(bundle => bundle.write({
-  file: `dist/marionette.nativeview${format === 'umd' ? '' : '.esm'}.js`,
+  file: `dist/marionette.native${format === 'umd' ? '' : '.esm'}.js`,
   format,
   sourcemap: true,
   name: format === 'umd' ? 'Marionette.Native' : undefined,
