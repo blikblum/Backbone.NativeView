@@ -108,7 +108,7 @@ const BaseMixin = {
   // a string of HTML, or an Element node. If passed a NodeList or CSS
   // selector, uses just the first match.
   _setElement: function(element) {
-    if (typeof element == 'string') {
+    if (typeof element === 'string') {
       if (paddedLt.test(element)) {
         var el = document.createElement('div');
         el.innerHTML = element;
@@ -148,8 +148,8 @@ const BaseMixin = {
 
     var root = this.el;
     var handler = selector ? function (e) {
-      var node = e.target || e.srcElement;
-      for (; node && node != root; node = node.parentNode) {
+      var node = e.target;
+      for (; node && node !== root; node = node.parentNode) {
         if (matchesSelector.call(node, selector)) {
           e.delegateTarget = node;
           listener(e);
