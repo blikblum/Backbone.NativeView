@@ -89,7 +89,7 @@
         event.clientY, event.ctrlKey, event.altKey, event.shiftKey,
         event.metaKey, event.button, event.relatedTarget
       ];
-      (event.initMouseEvent || event.initEvent).apply(event, args);
+      event.initEvent.apply(event, args);
     } else {
       event = document.createEventObject();
       event.type = 'click';
