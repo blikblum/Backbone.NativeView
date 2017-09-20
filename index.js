@@ -137,6 +137,10 @@ export var mixin = {
       }
     } : listener;
 
+    // remove namespace
+    var dotIndex = eventName.indexOf('.')
+    if (dotIndex > 0) eventName = eventName.slice(0, dotIndex).trim();
+
     elementAddEventListener.call(this.el, eventName, handler, false);
     this._domEvents.push({eventName: eventName, handler: handler, listener: listener, selector: selector});
     return handler;
