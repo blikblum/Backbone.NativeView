@@ -73,7 +73,7 @@ Remove jQuery dependency
 
 To remove jQuery dependency put the following code in start of application
 
-1) Patch the Marionette classes
+##### 1) Patch the Marionette classes
 
 ```js
 import {View, CollectionView, NextCollectionView, Region} from 'backbone.marionette';
@@ -90,7 +90,7 @@ or
 import 'marionette.native/patches'
 ```
 
-2) Patch `Backbone.ajax`
+##### 2) Patch `Backbone.ajax`
 
 With [Backbone.NativeAjax](https://github.com/akre54/Backbone.NativeAjax)
 ```javascript
@@ -110,7 +110,7 @@ import Backbone from 'backbone'
 Backbone.ajax = Dom7.ajax
 ```
 
-3. Fake jquery
+##### 3. Fake jquery
 
 With webpack
 ```
