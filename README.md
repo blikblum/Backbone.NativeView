@@ -63,11 +63,78 @@ or
 
 ```js
 // patch Marionette view classes directly
-import {View, CollectionView, NextCollectionView} from 'backbone.marionette';
+import {View} from 'backbone.marionette';
 import {mixin} from 'marionette.native';
+_.extend(View.prototype, mixin);
+```
+
+Remove jQuery dependency
+------------------------
+
+To remove jQuery dependency put the following code in start of application
+
+1) Patch the Marionette classes
+
+```js
+import {View, CollectionView, NextCollectionView, Region} from 'backbone.marionette';
+import {mixin, domApi} from 'marionette.native';
 _.extend(View.prototype, mixin);
 _.extend(CollectionView.prototype, mixin);
 _.extend(NextCollectionView.prototype, mixin);
+Region.setDomApi(domApi);
+```
+
+or
+
+```javascript
+import 'marionette.native/patches'
+```
+
+2) Patch `Backbone.ajax`
+
+With [Backbone.NativeAjax](https://github.com/akre54/Backbone.NativeAjax)
+```javascript
+import 'backbone.nativeajax'
+```
+
+or with [Backbone.Fetch](https://github.com/akre54/Backbone.Fetch)
+```javascript
+import 'backbone.nativeajax'
+```
+
+or with [Dom7 (Framework7)](http://framework7.io/docs/dom.html)
+```javascript
+import 'framework7'
+import Backbone from 'backbone'
+
+Backbone.ajax = Dom7.ajax
+```
+
+3. Fake jquery
+
+With webpack
+```
+//nojquery.js - in same dir as webpack.config.js
+module.exports = function() {};
+```
+```javascript
+//webpack.config.js
+module.exports = {
+  // [..]
+  resolve: {
+    alias: {
+      jquery: path.resolve(__dirname, './nojquery.js')
+    }
+  }
+};
+```
+
+or with script tag:
+```html
+  <script>
+    //dummy jquery
+    window.jQuery = window.$ = function () {}
+  </script>
 ```
 
 Features
@@ -102,9 +169,13 @@ Marionette.Native makes use of `querySelector` and `querySelectorAll`. No suppor
 
 Notes
 -----
-* The `$el` property no longer exists on Views. Use `el` instead.
+* The `$el` property is set to an array containing `view.el`.
 * `View#$` returns a NodeList instead of a jQuery context. You can
   iterate over either using `_.each`.
+* The event object, passed in event handlers, is the native one which, 
+among other things, handles `currentTarget` [differently](https://github.com/skatejs/skatejs/issues/302).
+On the other hand, the non standard `delegateTarget` is properly set in 
+the event object.  
 
 
 With many thanks to @wyuenho and @akre54 for their initial code.
