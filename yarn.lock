@@ -36,9 +36,9 @@ aws-sign2@~0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/aws-sign2/-/aws-sign2-0.5.0.tgz#c57103f7a17fc037f02d7c2e64b602ea223f7d63"
 
-backbone.marionette@^3.4.3:
-  version "3.4.3"
-  resolved "https://registry.yarnpkg.com/backbone.marionette/-/backbone.marionette-3.4.3.tgz#301330b051c414f784a02967e1452549c3312355"
+backbone.marionette@^4.0.0-alpha.1:
+  version "4.0.0-alpha.1"
+  resolved "https://registry.yarnpkg.com/backbone.marionette/-/backbone.marionette-4.0.0-alpha.1.tgz#c0ae9239ef86d885bc3fb5aff164e01997e6780d"
   dependencies:
     backbone.radio "^2.0.0"
 
@@ -46,7 +46,7 @@ backbone.radio@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/backbone.radio/-/backbone.radio-2.0.0.tgz#bbe8672b373e313f99f36d2fbcf583fe77d04f42"
 
-backbone@>1.2.0:
+backbone@^1.3.3:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/backbone/-/backbone-1.3.3.tgz#4cc80ea7cb1631ac474889ce40f2f8bc683b2999"
   dependencies:

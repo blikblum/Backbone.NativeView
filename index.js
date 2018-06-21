@@ -8,7 +8,7 @@
 //     https://github.com/blikblum/Marionette.Native
 
 import _ from 'underscore'
-import Marionette from 'backbone.marionette'
+import { View, CollectionView } from 'backbone.marionette'
 
 // Cached regex to match an opening '<' of an HTML tag, possibly left-padded
 // with whitespace.
@@ -72,7 +72,7 @@ export var domApi = {
 // with the mixin: _.extend(MyView.prototype, Backbone.NativeViewMixin);
 export var mixin = {
 
-  Dom: _.extend({}, Marionette.View.prototype.Dom, domApi),
+  Dom: _.extend({}, View.prototype.Dom, domApi),
 
   $: function(selector) {
     return this.el.querySelectorAll(selector);
@@ -186,8 +186,6 @@ export var mixin = {
   }
 };
 
-export var NativeView = Marionette.View.extend(mixin);
+export var NativeView = View.extend(mixin);
 
-export var NativeCollectionView = Marionette.CollectionView.extend(mixin);
-
-export var NativeNextCollectionView = Marionette.NextCollectionView.extend(mixin);
+export var NativeCollectionView = CollectionView.extend(mixin);

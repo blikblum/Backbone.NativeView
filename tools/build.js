@@ -23,7 +23,8 @@ promise = promise.then(() => del(['dist/*']));
   sourcemap: true,
   name: format === 'umd' ? 'Marionette.Native' : undefined,
   globals: {
-    backbone: 'Backbone'
+    backbone: 'Backbone',
+    'backbone.marionette': 'Marionette'
   }
 })));
 });
